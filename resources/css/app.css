@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === AUTH PAGE STYLE === */
+.auth-bg {
+    min-height: 100vh;
+    background: #1B365C;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Card login & register */
+.auth-card {
+    background: #F5F6FA;
+    width: 100%;
+    max-width: 460px; /* ⬅️ INI yang bikin lebih gede */
+    padding: 40px 36px; /* ⬅️ lebih lega */
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(27, 54, 92, 0.15);
+}
+
+/* Judul */
+.auth-title {
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    color: #1B365C;
+    margin-bottom: 6px;
+}
+
+.auth-subtitle {
+    text-align: center;
+    color: #2F2F2F;
+    margin-bottom: 28px; /* ⬅️ jarak ke form */
+}
+
+/* Input */
+.auth-input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1.5px solid #ddd;
+    font-size: 14px;
+    margin-bottom: 18px; /* ⬅️ JARAK ANTAR INPUT */
+}
+
+.auth-input:focus {
+    outline: none;
+    border-color: #45B39D;
+    box-shadow: 0 0 0 3px rgba(69, 179, 157, 0.2);
+}
+
+/* Button */
+.auth-button {
+    width: 100%;
+    padding: 14px;
+    background: #1B365C;
+    color: white;
+    border-radius: 14px;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.auth-button:hover {
+    background: #1B365C;
+}
+
+/* Link */
+.auth-link {
+    color: #1B365C;
+    font-weight: 500;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+/* Error box */
+.error-box {
+    background: #ffecec;
+    color: #b91c1c;
+    padding: 14px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.auth-page {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Tulisan FinTrack */
+.app-brand {
+    font-size: 65px;
+    font-weight: 800;
+    color: #F5F6FA;
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+}
