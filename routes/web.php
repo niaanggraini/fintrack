@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PengeluaranController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -21,6 +22,9 @@ Route::middleware('auth')->group(function () {
 
     // Transaksi (CRUD)
     Route::resource('transaksi', TransaksiController::class);
+
+    // Pengeluaran (CRUD)
+    Route::resource('pengeluaran', PengeluaranController::class);
 });
 
 require __DIR__.'/auth.php';
