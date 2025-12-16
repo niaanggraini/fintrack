@@ -45,8 +45,6 @@ class RegisteredUserController extends Controller
             'password.min' => 'Password minimal 5 karakter',
         ]);
 
-
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
