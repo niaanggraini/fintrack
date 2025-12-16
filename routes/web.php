@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\TabunganController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PengeluaranController;
 
@@ -25,6 +26,9 @@ Route::middleware('auth')->group(function () {
 
     // Pengeluaran (CRUD)
     Route::resource('pengeluaran', PengeluaranController::class);
+
+    // Tabungan (CRUD)
+    Route::resource('tabungan', TabunganController::class);
 });
 
 require __DIR__.'/auth.php';
