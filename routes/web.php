@@ -4,6 +4,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\TabunganController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TransaksiController;
+
+
 
 // Redirect root ke login
 Route::get('/', function () {
@@ -11,9 +15,9 @@ Route::get('/', function () {
 });
 
 // Dashboard
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('dashboard');
 
 // Routes yang butuh authentication
 Route::middleware('auth')->group(function () {
@@ -29,6 +33,9 @@ Route::middleware('auth')->group(function () {
 
     // Tabungan Routes
     Route::resource('tabungan', TabunganController::class);
+
+    Route::post('/transaksi', [TransaksiController::class, 'store'])
+        ->name('transaksi.store');
 });
 
 // Auth routes (login, register, password reset, dll)
