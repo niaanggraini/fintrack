@@ -37,9 +37,9 @@
         }
 
         .logo {
-            width: 40px;
-            height: 40px;
-            background-color: white;
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
             border-radius: 4px;
         }
 
@@ -100,7 +100,7 @@
 <body>
     <nav class="navbar">
         <a href="/" class="navbar-brand">
-            <div class="logo"></div>
+            <img src="{{ asset('images/logo.png') }}" alt="Fintrack Logo" class="logo">
             FinTrack
         </a>
         <ul class="navbar-menu">
