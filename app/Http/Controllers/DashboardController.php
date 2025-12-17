@@ -19,7 +19,7 @@ class DashboardController extends Controller
         $totalPengeluaran = Pengeluaran::where('user_id', $userId)->sum('nominal');
         $sisaUang = $totalPemasukan - $totalPengeluaran;
 
-
+        
         $totalPengeluaranBulanIni = Pengeluaran::where('user_id', $userId)
             ->whereMonth('tanggal', now()->month)
             ->whereYear('tanggal', now()->year)
