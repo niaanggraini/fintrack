@@ -126,11 +126,11 @@
             </li>
         </ul>
 
-        <div class="user-menu">
+         <a href="{{ route('profile.index') }}" class="user-menu">
             <div class="user-avatar"></div>
             <span>User</span>
-            <span>▼</span>
-        </div>
+        </a>
+
     </nav>
 
     <div class="container">
