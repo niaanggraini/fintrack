@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'failed' => 'Email atau password salah.',
-    'password' => 'Password salah.',
-    'throttle' => 'Terlalu banyak percobaan login. Silakan coba lagi nanti.',
+    'failed' => 'Email atau kata sandi salah.',
+    'password' => 'Kata sandi salah.',
+    'throttle' => 'Terlalu banyak percobaan masuk. Silakan coba lagi nanti.',
 ];
