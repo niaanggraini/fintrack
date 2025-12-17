@@ -112,9 +112,9 @@
             </li>
 
             <li>
-                <a href="{{ route('pengeluaran.index') }}"
-                class="{{ request()->routeIs('pengeluaran.*') ? 'active' : '' }}">
-                Pengeluaran
+                <a href="{{ route('dompet.index') }}"
+                class="{{ request()->routeIs('dompet.*') ? 'active' : '' }}">
+                Dompet
                 </a>
             </li>
 

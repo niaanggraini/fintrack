@@ -3,38 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - FinTrack</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
-        }
-        
-        .navbar {
-            background-color: #1e3a5f;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
-        
-        .navbar-left {
-            display: flex;
-            …
-[4:54 PM, 12/17/2025] nadiaa sayank: view edit profile :
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile - FinTrack</title>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -97,6 +70,8 @@
             border-radius: 8px;
             color: #1e3a5f;
             font-weight: 500;
+            cursor: pointer;
+            user-select: none;
         }
         
         .user-icon {
@@ -104,6 +79,40 @@
             height: 25px;
             background-color: #1e3a5f;
             border-radius: 50%;
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 8px);
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 200px;
+            overflow: hidden;
+            z-index: 1000;
+        }
+        
+        .dropdown-item {
+            display: block;
+            width: 100%;
+            padding: 12px 16px;
+            text-align: left;
+            background: none;
+            border: none;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f3f4f6;
         }
         
         .container {
@@ -271,7 +280,7 @@
     </style>
 </head>
 <body>
-    <nav class="navbar">
+    <nav class="navbar" x-data="{ open: false }">
         <div class="navbar-left">
             <div class="logo">
                 <div class="logo-icon"></div>
@@ -283,9 +292,30 @@
                 <a href="{{ url('/tabungan') }}">Tabungan</a>
             </div>
         </div>
-        <div class="navbar-right">
-            <div class="user-icon"></div>
-            <span>User</span>
+        
+        <div class="dropdown">
+            <div @click="open = !open" class="navbar-right">
+                <div class="user-icon"></div>
+                <span>{{ Auth::user()->name }}</span>
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20" style="margin-left: 8px;">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+                </svg>
+            </div>
+            
+            <div x-show="open" 
+                 @click.away="open = false"
+                 class="dropdown-menu"
+                 style="display: none;"
+                 x-transition>
+                
+                <a href="{{ route('profile.index') }}" class="dropdown-item">Profile</a>
+                <a href="{{ route('profile.edit') }}" class="dropdown-item">Edit Profile</a>
+                
+                <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
+                    @csrf
+                    <button type="submit" class="dropdown-item">Log Out</button>
+                </form>
+            </div>
         </div>
     </nav>
 

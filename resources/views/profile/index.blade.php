@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - FinTrack</title>
+    
     <style>
         * {
             margin: 0;
@@ -16,6 +17,7 @@
             background-color: #f5f5f5;
         }
         
+        /* NAVBAR - LOGO KIRI, MENU TENGAH, USER KANAN */
         .navbar {
             background-color: #1e3a5f;
             padding: 15px 30px;
@@ -23,12 +25,6 @@
             justify-content: space-between;
             align-items: center;
             color: white;
-        }
-        
-        .navbar-left {
-            display: flex;
-            align-items: center;
-            gap: 40px;
         }
         
         .logo {
@@ -48,13 +44,22 @@
         
         .nav-links {
             display: flex;
-            gap: 30px;
+            gap: 40px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
         }
         
         .nav-links a {
             color: white;
             text-decoration: none;
             font-size: 14px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .nav-links a.active {
+            border-bottom: 2px solid white;
         }
         
         .navbar-right {
@@ -66,6 +71,13 @@
             border-radius: 8px;
             color: #1e3a5f;
             font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        
+        .navbar-right:hover {
+            opacity: 0.9;
         }
         
         .user-icon {
@@ -170,24 +182,29 @@
     </style>
 </head>
 <body>
+    <!-- NAVBAR: LOGO KIRI - MENU TENGAH - USER KANAN -->
     <nav class="navbar">
-        <div class="navbar-left">
-            <div class="logo">
-                <div class="logo-icon"></div>
-                <span>FinTrack</span>
-            </div>
-            <div class="nav-links">
-                <a href="{{ url('/dashboard') }}">Dashboard</a>
-                <a href="{{ url('/dompet') }}">Dompet</a>
-                <a href="{{ url('/tabungan') }}">Tabungan</a>
-            </div>
+        <!-- LOGO KIRI -->
+        <div class="logo">
+            <div class="logo-icon"></div>
+            <span>FinTrack</span>
         </div>
-        <div class="navbar-right">
+        
+        <!-- MENU TENGAH -->
+        <div class="nav-links">
+            <a href="{{ route('dashboard') }}">Dashboard</a>
+            <a href="{{ route('pengeluaran.index') }}">Pengeluaran</a>
+            <a href="#">Tabungan</a>
+        </div>
+        
+        <!-- USER KANAN -->
+        <a href="{{ route('profile.index') }}" class="navbar-right">
             <div class="user-icon"></div>
-            <span>User</span>
-        </div>
+            <span>{{ Auth::user()->name }}</span>
+        </a>
     </nav>
 
+    <!-- PROFILE CONTENT -->
     <div class="container">
         <div class="profile-header">
             <div class="profile-header-icon"></div>

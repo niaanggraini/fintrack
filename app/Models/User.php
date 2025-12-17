@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -15,24 +14,24 @@ class User extends Authenticatable
     /**
      * The attributes that are mass assignable.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'favorite_category',  // punya temen lo (pengeluaran)
-        'phone',              // punya lo (profile)
-        'negara',             // punya lo (profile)
-        'kota',               // punya lo (profile)
-        'alamat',             // punya lo (profile)
-        'profile_photo',      // punya lo (profile)
+        'phone',
+        'profile_photo',
+        'negara',
+        'kota',
+        'alamat',
+        'favorite_category',
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -53,18 +52,10 @@ class User extends Authenticatable
     }
     
     /**
-     * Relationships
+     * Relasi ke Pengeluaran
      */
-    
-    // Relationship untuk Pengeluaran (punya temen lo)
     public function pengeluarans()
     {
         return $this->hasMany(Pengeluaran::class);
     }
-    
-    // Relationship untuk Tabungan (punya lo)
-    public function tabungans()
-    {
-        return $this->hasMany(Tabungan::class);
-    }
-}
+} 

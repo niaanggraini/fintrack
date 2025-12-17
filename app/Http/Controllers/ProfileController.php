@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
+    /**
+     * Tampilkan halaman profile
+     */
     public function index()
     {
         return view('profile.index', [
@@ -15,6 +18,9 @@ class ProfileController extends Controller
         ]);
     }
 
+    /**
+     * Tampilkan form edit profile
+     */
     public function edit()
     {
         return view('profile.edit', [
@@ -22,8 +28,12 @@ class ProfileController extends Controller
         ]);
     }
 
+    /**
+     * Update profile user
+     */
     public function update(Request $request)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         
         $validated = $request->validate([
@@ -36,21 +46,27 @@ class ProfileController extends Controller
             'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
+        // Handle upload foto profile
         if ($request->hasFile('profile_photo')) {
             // Hapus foto lama jika ada
             if ($user->profile_photo) {
                 Storage::delete('public/' . $user->profile_photo);
             }
             
+            // Simpan foto baru
             $path = $request->file('profile_photo')->store('profile_photos', 'public');
             $validated['profile_photo'] = $path;
         }
 
+        // Update data user
         $user->update($validated);
 
         return redirect()->route('profile.index')->with('success', 'Profile berhasil diupdate!');
     }
 
+    /**
+     * Logout user
+     */
     public function logout(Request $request)
     {
         Auth::logout();
