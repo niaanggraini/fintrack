@@ -82,7 +82,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 5px
         }
 
         .alert {
@@ -92,6 +92,23 @@
             background-color: #d4edda;
             border: 1px solid #c3e6cb;
             color: #155724;
+        }
+        .alert {
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0; /* jarak atas-bawah */
+            border-radius: 8px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* biar sedikit mengambang */
+            font-weight: 500;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* opsional: fade out otomatis setelah beberapa detik */
+        .alert.fade-out {
+            opacity: 0;
+            transform: translateY(-10px);
         }
 
         @yield('styles')
@@ -112,9 +129,9 @@
             </li>
 
             <li>
-                <a href="{{ route('dompet.index') }}"
-                class="{{ request()->routeIs('dompet.*') ? 'active' : '' }}">
-                Dompet
+                <a href="{{ route('pengeluaran.index') }}"
+                class="{{ request()->routeIs('pengeluaran.*') ? 'active' : '' }}">
+                Pengeluaran
                 </a>
             </li>
 
@@ -128,7 +145,7 @@
 
          <a href="{{ route('profile.index') }}" class="user-menu">
             <div class="user-avatar"></div>
-            <span>User</span>
+            <span>{{ Auth::user()->name }}</span>
         </a>
 
     </nav>

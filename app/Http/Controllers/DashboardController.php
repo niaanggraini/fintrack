@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transaksi;
+use App\Models\Pengeluaran;
+use App\Models\Pemasukan;
+use App\Models\Tabungan;
 use App\Models\Kategori;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -12,43 +15,57 @@ class DashboardController extends Controller
     {
         $userId = Auth::id();
 
-        // Ambil ID kategori pemasukan (Gaji, Bonus, Investasi, dll)
-        $kategoriMasuk = Kategori::whereIn('nama', ['Gaji', 'Bonus', 'Investasi'])
-            ->pluck('id')
-            ->toArray();
+        $totalPemasukan = Pemasukan::where('user_id', $userId)->sum('jumlah');
+        $totalPengeluaran = Pengeluaran::where('user_id', $userId)->sum('nominal');
+        $sisaUang = $totalPemasukan - $totalPengeluaran;
 
-        // Total pemasukan
-        $totalMasuk = Transaksi::where('user_id', $userId)
-            ->whereIn('kategori_id', $kategoriMasuk)
+
+        $totalPengeluaranBulanIni = Pengeluaran::where('user_id', $userId)
+            ->whereMonth('tanggal', now()->month)
+            ->whereYear('tanggal', now()->year)
             ->sum('nominal');
 
-        // Total pengeluaran
-        $totalKeluar = Transaksi::where('user_id', $userId)
-            ->whereNotIn('kategori_id', $kategoriMasuk)
+        $totalPengeluaranHariIni = Pengeluaran::where('user_id', $userId)
+            ->whereDate('tanggal', today())
             ->sum('nominal');
 
-        // Total akhir
-        $total = $totalMasuk - $totalKeluar;
+        $jumlahTransaksi = Pengeluaran::where('user_id', $userId)->count();
 
-        // Jumlah transaksi
-        $count = Transaksi::where('user_id', $userId)->count();
+        $rataRataPengeluaran = $jumlahTransaksi > 0 
+            ? $totalPengeluaranBulanIni / $jumlahTransaksi 
+            : 0;
 
-        // Rata-rata
-        $rata = $count > 0 ? $total / $count : 0;
-
-        $transaksiTerbaru = Transaksi::where('user_id', $userId)
+        $pengeluaranTerbaru = Pengeluaran::where('user_id', $userId)
+            ->with('kategori')
             ->orderBy('tanggal', 'desc')
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
-            
+
+        $tabungan = Tabungan::where('user_id', $userId)->first();
+
+        $pengeluaranPerKategori = Pengeluaran::where('user_id', $userId)
+            ->whereMonth('tanggal', now()->month)
+            ->whereYear('tanggal', now()->year)
+            ->with('kategori')
+            ->get()
+            ->groupBy('kategori.nama')
+            ->map(fn($items) => $items->sum('nominal'))
+            ->sortDesc()
+            ->take(5);
+
         return view('dashboard', compact(
-            'total',
-            'count',
-            'rata',
-            'totalMasuk',
-            'totalKeluar', 
-            'transaksiTerbaru'
+            'totalPemasukan',
+            'totalPengeluaran',
+            'sisaUang',
+            'totalPengeluaranBulanIni',
+            'totalPengeluaranHariIni',
+            'jumlahTransaksi',
+            'rataRataPengeluaran',
+            'pengeluaranTerbaru',
+            'tabungan',
+            'pengeluaranPerKategori'
         ));
     }
+
 }
