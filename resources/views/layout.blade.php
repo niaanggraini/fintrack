@@ -55,6 +55,7 @@
             padding: 0.5rem 1rem;
             border-bottom: 3px solid transparent;
             transition: border-color 0.3s;
+            font-size: 1rem;
         }
 
         .navbar-menu a.active {
@@ -104,10 +105,28 @@
             FinTrack
         </a>
         <ul class="navbar-menu">
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/dompet">Dompet</a></li>
-            <li><a href="{{ route('tabungan.index') }}" class="active">Tabungan</a></li>
+            <li>
+                <a href="{{ route('dashboard') }}"
+                class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('pengeluaran.index') }}"
+                class="{{ request()->routeIs('pengeluaran.*') ? 'active' : '' }}">
+                Pengeluaran
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('tabungan.index') }}"
+                class="{{ request()->routeIs('tabungan.*') ? 'active' : '' }}">
+                Tabungan
+                </a>
+            </li>
         </ul>
+
         <div class="user-menu">
             <div class="user-avatar"></div>
             <span>User</span>
