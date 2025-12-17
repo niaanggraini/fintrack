@@ -28,7 +28,18 @@ Route::middleware('auth')->group(function () {
     Route::resource('pengeluaran', PengeluaranController::class);
 
     // Tabungan (CRUD)
-    Route::resource('tabungan', TabunganController::class);
+    Route::prefix('tabungan')->name('tabungan.')->group(function () {
+        Route::get('/', [TabunganController::class, 'index'])->name('index');
+        Route::get('/create', [TabunganController::class, 'create'])->name('create');
+        Route::post('/', [TabunganController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [TabunganController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [TabunganController::class, 'update'])->name('update');
+        Route::delete('/{id}', [TabunganController::class, 'destroy'])->name('destroy');
+        
+        // Routes untuk histori tabungan
+        Route::get('/{id}/add-history', [TabunganController::class, 'addHistory'])->name('add-history');
+        Route::post('/{id}/store-history', [TabunganController::class, 'storeHistory'])->name('store-history');
+    }); 
 });
 
 require __DIR__.'/auth.php';
