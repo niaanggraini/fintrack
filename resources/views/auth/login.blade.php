@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div class="auth-card">
 
-        <h1 class="auth-title">Login</h1>
+        <h1 class="auth-title">Masuk</h1>
         <p class="auth-subtitle">Masuk ke akun kamu</p>
 
         @if ($errors->any())
@@ -27,20 +27,20 @@
             <input
                 type="password"
                 name="password"
-                placeholder="Password"
+                placeholder="Kata sandi"
                 required
                 class="auth-input"
             >
 
             <button type="submit" class="auth-button">
-                Login
+                Masuk
             </button>
         </form>
 
         <div class="text-center mt-6">
-            Don’t have an account? 
+            Tidak Memiliki Akun? 
             <a href="{{ route('register') }}" class="auth-link">
-                Register
+                Daftar
             </a>
         </div>
 

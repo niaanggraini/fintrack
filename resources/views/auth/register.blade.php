@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div class="auth-card">
 
-        <h1 class="auth-title">Register</h1>
+        <h1 class="auth-title">Daftar</h1>
         <p class="auth-subtitle">Buat akun baru</p>
 
         @if ($errors->any())
@@ -18,7 +18,7 @@
             <input
                 type="text"
                 name="name"
-                placeholder="Full Name"
+                placeholder="Nama Lengkap"
                 value="{{ old('name') }}"
                 required
                 class="auth-input"
@@ -36,7 +36,7 @@
             <input
                 type="password"
                 name="password"
-                placeholder="Password (Min. 5 characters)"
+                placeholder="Kata Sandi (Min. 5 karakter)"
                 required
                 class="auth-input"
             >
@@ -44,20 +44,20 @@
             <input
                 type="password"
                 name="password_confirmation"
-                placeholder="Confirm Password"
+                placeholder="Konfirmasi Kata Sandi"
                 required
                 class="auth-input"
             >
 
             <button type="submit" class="auth-button">
-                Register
+                Daftar
             </button>
         </form>
 
         <div class="text-center mt-6">
-            Already have an account? 
+            Sudah Memiliki Akun? 
             <a href="{{ route('login') }}" class="auth-link">
-                Login
+                Masuk
             </a>
         </div>
 
