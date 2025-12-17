@@ -1,100 +1,148 @@
-<nav x-data="{ open: false }" class="bg-slate-800 border-b border-slate-700">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-screen-xl mx-auto px-8 lg:px-12">
-        <div class="flex justify-between h-16">
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinTrack - @yield('title')</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-            <!-- Left -->
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center mr-6">
-                    <span class="text-white font-bold text-xl tracking-wide">
-                        FinTrack
-                    </span>
-                </div>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
 
-                <!-- Navigation Links -->
-                <div class="hidden sm:flex sm:ms-16 space-x-12">
-                    <a href="{{ route('dashboard') }}"
-                    class="inline-flex items-center px-1 pt-1 text-sm font-medium
-                    {{ request()->routeIs('dashboard')
-                            ? 'text-white border-b-2 border-white'
-                            : 'text-slate-300 hover:text-white' }}">
-                        Home
-                    </a>
+        .navbar {
+            background-color: #1e3a5f;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
 
-                    <a href="{{ route('pengeluaran.index') }}"
-                    class="inline-flex items-center px-1 pt-1 text-sm font-medium
-                    {{ request()->routeIs('pengeluaran.*')
-                            ? 'text-white border-b-2 border-white'
-                            : 'text-slate-300 hover:text-white' }}">
-                        Pengeluaran
-                    </a>
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
 
-                    <!-- Tabungan -->
-                    <span
-                        class="inline-flex items-center px-1 pt-1 text-sm font-medium
-                        text-slate-400 cursor-not-allowed">
-                        Tabungan
-                    </span>
-                </div>
-            </div>
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 4px;
+        }
 
+        .navbar-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
 
-            <!-- Right -->
-            <div class="flex items-center ml-auto space-x-4">
+        .navbar-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-bottom: 3px solid transparent;
+            transition: border-color 0.3s;
+        }
 
-                <!-- User Dropdown -->
-                <div class="hidden sm:flex sm:items-center">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button class="flex items-center bg-white px-4 py-2 rounded-lg text-slate-800 font-semibold">
-                                <div>{{ Auth::user()->name }}</div>
+        .navbar-menu a.active {
+            border-bottom-color: white;
+        }
 
-                                <svg class="ms-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
-                                </svg>
-                            </button>
-                        </x-slot>
+        .user-menu {
+            background-color: white;
+            color: #1e3a5f;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
 
-                        <x-slot name="content">
-                            <x-dropdown-link :href="route('profile.edit')">
-                                Profile
-                            </x-dropdown-link>
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            background-color: #1e3a5f;
+            border-radius: 50%;
+        }
 
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault(); this.closest('form').submit();">
-                                    Log Out
-                                </x-dropdown-link>
-                            </form>
-                        </x-slot>
-                    </x-dropdown>
-                </div>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
 
-                <!-- Hamburger -->
-                <div class="flex items-center sm:hidden">
-                    <button @click="open = ! open"
-                            class="text-slate-300 hover:text-white focus:outline-none">
-                        ☰
-                    </button>
-                </div>
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
 
-            </div>
-
-
-    <!-- Responsive Menu -->
-    <div x-show="open" class="sm:hidden bg-slate-800">
-        <div class="pt-2 pb-3 space-y-1">
-            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-white">
+        @yield('styles')
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">
+            <div class="logo"></div>
+            FinTrack
+        </a>
+        <ul class="navbar-menu">
+            <li>
+                <a href="{{ route('dashboard') }}"
+                class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 Dashboard
-            </a>
-            <a href="{{ route('pengeluaran.index') }}" class="block px-4 py-2 text-white">
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('pengeluaran.index') }}"
+                class="{{ request()->routeIs('pengeluaran.*') ? 'active' : '' }}">
                 Pengeluaran
-            </a>
-            <a href="" class="block px-4 py-2 text-white">
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('tabungan.index') }}"
+                class="{{ request()->routeIs('tabungan.*') ? 'active' : '' }}">
                 Tabungan
-            </a>
+                </a>
+            </li>
+        </ul>
+
+        <div class="user-menu">
+            <div class="user-avatar"></div>
+            <span>User</span>
+            <span>▼</span>
         </div>
+    </nav>
+
+    <div class="container">
+        @if(session('success'))
+            <div class="alert">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @yield('content')
     </div>
-</nav>
+
+    @yield('scripts')
+</body>
+</html>
