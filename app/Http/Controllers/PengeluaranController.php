@@ -9,33 +9,49 @@ use Illuminate\Support\Facades\Auth;
 
 class PengeluaranController extends Controller
 {
-    public function index()
-    {
-        $query = Pengeluaran::where('user_id', Auth::id())
-            ->with('kategori')
-            ->orderBy('tanggal', 'desc');
+       public function index(Request $request)
+        {
+            $userId = Auth::id();
+            $filter = $request->filter;
 
-        if (request()->has('filter')) {
-            $filter = request()->filter;
+            $ringkasanHarian = Pengeluaran::where('user_id', $userId)
+                ->whereDate('tanggal', today())
+                ->sum('nominal');
 
-            if ($filter == 'today') {
-                $query->whereDate('tanggal', today());
-            } elseif ($filter == 'week') {
-                $query->whereBetween('tanggal', [now()->startOfWeek(), now()->endOfWeek()]);
-            } elseif ($filter == 'month') {
-                $query->whereMonth('tanggal', now()->month)
-                      ->whereYear('tanggal', now()->year);
+            $analisisQuery = Pengeluaran::where('user_id', $userId);
+
+            if ($filter === 'today') {
+                $analisisQuery->whereDate('tanggal', today());
+            } elseif ($filter === 'week') {
+                $analisisQuery->whereBetween('tanggal', [
+                    now()->startOfWeek(),
+                    now()->endOfWeek()
+                ]);
+            } elseif ($filter === 'month') {
+                $analisisQuery->whereMonth('tanggal', now()->month)
+                            ->whereYear('tanggal', now()->year);
             }
+
+            $chartKategori = $analisisQuery
+                ->with('kategori')
+                ->get()
+                ->groupBy('kategori.nama')
+                ->map(fn ($row) => $row->sum('nominal'));
+
+            $pengeluarans = Pengeluaran::where('user_id', $userId)
+                ->with('kategori')
+                ->orderBy('tanggal', 'desc')
+                ->get();
+
+            return view('pengeluaran.index', compact(
+                'ringkasanHarian',
+                'chartKategori',
+                'pengeluarans'
+            ));
         }
 
-        $pengeluarans = $query->get();
 
-        $ringkasanHarian = Pengeluaran::where('user_id', Auth::id())
-            ->whereDate('tanggal', today())
-            ->sum('nominal');
 
-        return view('pengeluaran.index', compact('pengeluarans', 'ringkasanHarian'));
-    }
 
     public function create()
     {
