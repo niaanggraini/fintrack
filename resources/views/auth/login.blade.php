@@ -32,7 +32,7 @@
                 class="auth-input"
             >
 
-            <button type="submit" class="auth-button">
+            <button type="submit" class="auth-button mt-4">
                 Masuk
             </button>
         </form>
