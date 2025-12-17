@@ -21,7 +21,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'favorite_category',
+        'favorite_category',  // punya temen lo (pengeluaran)
+        'phone',              // punya lo (profile)
+        'negara',             // punya lo (profile)
+        'kota',               // punya lo (profile)
+        'alamat',             // punya lo (profile)
+        'profile_photo',      // punya lo (profile)
     ];
 
     /**
@@ -47,9 +52,19 @@ class User extends Authenticatable
         ];
     }
     
-
+    /**
+     * Relationships
+     */
+    
+    // Relationship untuk Pengeluaran (punya temen lo)
     public function pengeluarans()
-{
-    return $this->hasMany(Pengeluaran::class);
-}
+    {
+        return $this->hasMany(Pengeluaran::class);
+    }
+    
+    // Relationship untuk Tabungan (punya lo)
+    public function tabungans()
+    {
+        return $this->hasMany(Tabungan::class);
+    }
 }
