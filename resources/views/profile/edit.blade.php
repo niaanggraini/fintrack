@@ -1,337 +1,20 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile - FinTrack</title>
-    
-    <!-- Alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
-        }
-        
-        .navbar {
-            background-color: #1e3a5f;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
-        
-        .navbar-left {
-            display: flex;
-            align-items: center;
-            gap: 40px;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 20px;
-            font-weight: 600;
-        }
-        
-        .logo-icon {
-            width: 30px;
-            height: 30px;
-            background-color: white;
-            border-radius: 4px;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        
-        .navbar-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background-color: white;
-            padding: 8px 15px;
-            border-radius: 8px;
-            color: #1e3a5f;
-            font-weight: 500;
-            cursor: pointer;
-            user-select: none;
-        }
-        
-        .user-icon {
-            width: 25px;
-            height: 25px;
-            background-color: #1e3a5f;
-            border-radius: 50%;
-        }
-        
-        .dropdown {
-            position: relative;
-        }
-        
-        .dropdown-menu {
-            position: absolute;
-            right: 0;
-            top: calc(100% + 8px);
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            min-width: 200px;
-            overflow: hidden;
-            z-index: 1000;
-        }
-        
-        .dropdown-item {
-            display: block;
-            width: 100%;
-            padding: 12px 16px;
-            text-align: left;
-            background: none;
-            border: none;
-            color: #333;
-            text-decoration: none;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        
-        .dropdown-item:hover {
-            background-color: #f3f4f6;
-        }
-        
-        .container {
-            max-width: 650px;
-            margin: 40px auto;
-            background-color: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-        
-        .profile-header-icon {
-            width: 24px;
-            height: 24px;
-            border: 2px solid #333;
-            border-radius: 50%;
-        }
-        
-        .profile-header h2 {
-            font-size: 18px;
-            font-weight: 600;
-        }
-        
-        .form-content {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .profile-photo-section {
-            flex-shrink: 0;
-        }
-        
-        .profile-photo {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background-color: #9BB8D3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        
-        .profile-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .form-fields {
-            flex: 1;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 6px;
-            color: #333;
-        }
-        
-        .required {
-            color: red;
-        }
-        
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #d1d1d1;
-            border-radius: 6px;
-            font-size: 14px;
-            font-family: inherit;
-        }
-        
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #1e3a5f;
-        }
-        
-        .address-section h3 {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #333;
-        }
-        
-        .address-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .button-group {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-        
-        .btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-        
-        .btn:hover {
-            opacity: 0.9;
-        }
-        
-        .btn-back {
-            background-color: #d1d1d1;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .btn-save {
-            background-color: #1e3a5f;
-            color: white;
-        }
-        
-        .alert {
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-        
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .alert-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
+<x-app-layout>
+    <div class="max-w-2xl mx-auto mt-10 bg-white rounded-xl p-8 shadow">
 
-        #photo-upload {
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar" x-data="{ open: false }">
-        <div class="navbar-left">
-            <div class="logo">
-                <div class="logo-icon"></div>
-                <span>FinTrack</span>
-            </div>
-            <div class="nav-links">
-                <a href="{{ url('/dashboard') }}">Dashboard</a>
-                <a href="{{ url('/dompet') }}">Dompet</a>
-                <a href="{{ url('/tabungan') }}">Tabungan</a>
-            </div>
-        </div>
-        
-        <div class="dropdown">
-            <div @click="open = !open" class="navbar-right">
-                <div class="user-icon"></div>
-                <span>{{ Auth::user()->name }}</span>
-                <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20" style="margin-left: 8px;">
-                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
-                </svg>
-            </div>
-            
-            <div x-show="open" 
-                 @click.away="open = false"
-                 class="dropdown-menu"
-                 style="display: none;"
-                 x-transition>
-                
-                <a href="{{ route('profile.index') }}" class="dropdown-item">Profile</a>
-                <a href="{{ route('profile.edit') }}" class="dropdown-item">Edit Profile</a>
-                
-                <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
-                    @csrf
-                    <button type="submit" class="dropdown-item">Log Out</button>
-                </form>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="profile-header">
-            <div class="profile-header-icon"></div>
-            <h2>Profile</h2>
+        <div class="flex items-center gap-3 mb-6 border-b pb-4">
+            <div class="w-6 h-6 border-2 border-gray-700 rounded-full"></div>
+            <h2 class="text-lg font-semibold">Edit Profile</h2>
         </div>
 
         @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
+            <div class="mb-4 p-3 rounded bg-green-100 text-green-800 border border-green-200">
+                {{ session('success') }}
+            </div>
         @endif
 
         @if($errors->any())
-            <div class="alert alert-error">
-                <ul style="margin-left: 20px;">
+            <div class="mb-4 p-3 rounded bg-red-100 text-red-800 border border-red-200">
+                <ul class="list-disc ml-5">
                     @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -341,80 +24,134 @@
 
         <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            
-            <div class="form-content">
-                <div class="profile-photo-section">
-                    <div class="profile-photo" onclick="document.getElementById('photo-upload').click()">
+
+            <div class="flex gap-6 mb-6">
+                <!-- FOTO -->
+                <div>
+                    <div
+                        class="w-20 h-20 rounded-full bg-blue-200 overflow-hidden cursor-pointer"
+                        onclick="document.getElementById('photo-upload').click()"
+                    >
                         @if($user->profile_photo)
-                            <img src="{{ asset('storage/' . $user->profile_photo) }}" alt="Profile" id="preview-photo">
+                            <img
+                                src="{{ asset('storage/' . $user->profile_photo) }}"
+                                class="w-full h-full object-cover"
+                                id="preview-photo"
+                            >
                         @else
-                            <img src="" alt="" id="preview-photo" style="display: none;">
+                            <img id="preview-photo" class="hidden">
                         @endif
                     </div>
-                    <input type="file" id="photo-upload" name="profile_photo" accept="image/*" onchange="previewImage(event)">
+
+                    <input
+                        type="file"
+                        id="photo-upload"
+                        name="profile_photo"
+                        accept="image/*"
+                        class="hidden"
+                        onchange="previewImage(event)"
+                    >
                 </div>
 
-                <div class="form-fields">
-                    <div class="form-group">
-                        <label>Nama Lengkap <span class="required">*</span></label>
-                        <input type="text" name="name" value="{{ old('name', $user->name) }}" required>
+                <!-- FORM -->
+                <div class="flex-1 space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Nama Lengkap *</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value="{{ old('name', $user->name) }}"
+                            required
+                            class="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-300"
+                        >
                     </div>
 
-                    <div class="form-group">
-                        <label>Alamat Email <span class="required">*</span></label>
-                        <input type="email" name="email" value="{{ old('email', $user->email) }}" required>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Email *</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value="{{ old('email', $user->email) }}"
+                            required
+                            class="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-300"
+                        >
                     </div>
 
-                    <div class="form-group">
-                        <label>Nomor Telepon <span class="required">*</span></label>
-                        <input type="text" name="phone" value="{{ old('phone', $user->phone) }}" required>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Nomor Telepon *</label>
+                        <input
+                            type="text"
+                            name="phone"
+                            value="{{ old('phone', $user->phone) }}"
+                            required
+                            class="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-300"
+                        >
                     </div>
                 </div>
             </div>
 
-            <div class="address-section">
-                <h3>Alamat Domisili</h3>
-                
-                <div class="address-row">
-                    <div class="form-group">
-                        <label>Negara</label>
-                        <input type="text" name="negara" value="{{ old('negara', $user->negara) }}">
-                    </div>
-                    <div class="form-group">
-                        <label>Kota</label>
-                        <input type="text" name="kota" value="{{ old('kota', $user->kota) }}">
-                    </div>
+            <!-- ALAMAT -->
+            <div class="mb-6">
+                <h3 class="font-semibold mb-3">Alamat Domisili</h3>
+
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <input
+                        type="text"
+                        name="negara"
+                        placeholder="Negara"
+                        value="{{ old('negara', $user->negara) }}"
+                        class="border rounded px-3 py-2"
+                    >
+                    <input
+                        type="text"
+                        name="kota"
+                        placeholder="Kota"
+                        value="{{ old('kota', $user->kota) }}"
+                        class="border rounded px-3 py-2"
+                    >
                 </div>
 
-                <div class="form-group">
-                    <label>Alamat</label>
-                    <input type="text" name="alamat" value="{{ old('alamat', $user->alamat) }}">
-                </div>
+                <input
+                    type="text"
+                    name="alamat"
+                    placeholder="Alamat lengkap"
+                    value="{{ old('alamat', $user->alamat) }}"
+                    class="w-full border rounded px-3 py-2"
+                >
             </div>
 
-            <div class="button-group">
-                <a href="{{ route('profile.index') }}" class="btn btn-back">
+            <!-- BUTTON -->
+            <div class="flex justify-between">
+                <a
+                    href="{{ route('profile.index') }}"
+                    class="px-6 py-2 rounded bg-gray-300 text-gray-800"
+                >
                     ← Kembali
                 </a>
-                <button type="submit" class="btn btn-save">Simpan Perubahan</button>
+
+                <button
+                    type="submit"
+                    class="px-6 py-2 rounded bg-blue-900 text-white"
+                >
+                    Simpan Perubahan
+                </button>
             </div>
         </form>
     </div>
 
     <script>
         function previewImage(event) {
-            const file = event.target.files[0];
             const preview = document.getElementById('preview-photo');
-            
+            const file = event.target.files[0];
+
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = e => {
                     preview.src = e.target.result;
-                    preview.style.display = 'block';
-                }
+                    preview.classList.remove('hidden');
+                };
                 reader.readAsDataURL(file);
             }
         }
     </script>
-</body>
-</html>
+</x-app-layout>
