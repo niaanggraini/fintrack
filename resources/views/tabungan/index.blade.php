@@ -194,11 +194,101 @@
             display: inline-block;
             cursor: pointer;
         }
+
+        /* Alert Styles */
+        .alert {
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border: 2px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            border: 2px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-content {
+            flex: 1;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .alert-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
     </style>
 
     <div class="py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            {{-- Session Messages --}}
+            @if(session('success'))
+                <div class="alert alert-success">
+                    <div style="display: flex; align-items: center;">
+                        <span class="alert-icon">✅</span>
+                        <div class="alert-content">{{ session('success') }}</div>
+                    </div>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-error">
+                    <div style="display: flex; align-items: center;">
+                        <span class="alert-icon">⚠️</span>
+                        <div class="alert-content">{{ session('error') }}</div>
+                    </div>
+                </div>
+            @endif
+
             @if($tabungan)
+                
+                {{-- Alert Target Tercapai --}}
+                @if($tabungan->saldo_terkini >= $tabungan->target_tabungan)
+                    <div class="alert alert-success">
+                        <div style="display: flex; align-items: center; flex: 1;">
+                            <span class="alert-icon">🎉</span>
+                            <div class="alert-content">
+                                Selamat! Target tabungan tercapai! Hapus tabungan ini untuk membuat yang baru.
+                            </div>
+                        </div>
+                        <form action="{{ route('tabungan.destroy', $tabungan->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-danger" onclick="return confirm('Yakin ingin menghapus tabungan ini? Histori akan ikut terhapus.')">
+                                Hapus & Buat Tabungan Baru
+                            </button>
+                        </form>
+                    </div>
+                @endif
+
                 <div class="tabungan-card">
                     <div class="tabungan-title">{{ $tabungan->nama_tabungan }}</div>
                     <div class="tabungan-amount">Rp. {{ number_format($tabungan->target_tabungan, 0, ',', '.') }}</div>
@@ -214,7 +304,15 @@
                     <p class="progress-text">
                         Rp. {{ number_format($tabungan->saldo_terkini, 0, ',', '.') }}/Rp. {{ number_format($tabungan->target_tabungan, 0, ',', '.') }}
                     </p>
-                    <a href="{{ route('tabungan.add-history', $tabungan->id) }}" class="btn-add">+ Tambah tabungan</a>
+                    
+                    {{-- Button tambah tabungan (disabled kalo udah tercapai) --}}
+                    @if($tabungan->saldo_terkini >= $tabungan->target_tabungan)
+                        <button class="btn-add" style="background-color: #6c757d; cursor: not-allowed;" disabled>
+                            Target Tercapai
+                        </button>
+                    @else
+                        <a href="{{ route('tabungan.add-history', $tabungan->id) }}" class="btn-add">+ Tambah tabungan</a>
+                    @endif
                 </div>
 
                 <div class="histori-section">
