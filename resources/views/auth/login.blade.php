@@ -2,7 +2,7 @@
     <div class="auth-card">
 
         <h1 class="auth-title">Masuk</h1>
-        <p class="auth-subtitle">Masuk ke akun kamu</p>
+        <p class="auth-subtitle">Catat Pengeluaran Kamu Sekarang</p>
 
         @if ($errors->any())
             <div class="error-box">
